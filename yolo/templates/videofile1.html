@@ -1,0 +1,426 @@
+{% load static %}
+<!doctype html>
+<!--[if IE 9]> <html class="no-js ie9 fixed-layout" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js " lang="en">
+<!--<![endif]-->
+
+<head>
+
+  <!-- Basic -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Mobile Meta -->
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- Site Meta -->
+  <title>ColdEyes Project</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Site Icons -->
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="{% static  'image/x-icon' %}" />
+  <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+  <!-- Custom & Default Styles -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+
+  <!--Bootstrap-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://d10ajoocuyu32n.cloudfront.net/jquery-1.9.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!--[if lt IE 9]>
+		<script src="js/vendor/html5shiv.min.js"></script>
+		<script src="js/vendor/respond.min.js"></script>
+	<![endif]-->
+  <script src="https://d10ajoocuyu32n.cloudfront.net/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript">
+    function dismiss_modal(){
+        document.getElementById('myModal').style.display='none';
+    }
+    window.onload = function() {
+
+      $.ajax({
+        url: 'label_list_get',
+
+      }).done(function(msg) {
+        //console.log(Object.keys(msg).length);
+        str = "";
+        for (var i = 1; i <= Object.keys(msg).length; i++) {
+          str += " " + msg[i];
+          if (i + 1 < Object.keys(msg).length)
+            str += ", ";
+        }
+        $("#results").html("<h3><b>감지된 물체   :  " + str + "</b></h3>");
+      });
+    };
+
+     <!-- -->
+     function sendAlart(){
+       alertFireinfo();
+       //sendemail(); 메일 보내는 코드
+     }
+
+     function sendemail(){
+       $(document).ready(function(){
+           $.ajax({
+             url :'mail',
+           }).done(function(alert_info){
+           });
+        });
+     }
+
+   function alertFireinfo(){
+
+     $(document).ready(function(){
+     $.ajax({
+       url :'incheon_fireoffice_weather_info',
+     }).done(function(alert_info){
+       console.log("AlertFireinfo")
+       //console.log(Object.keys(alert_info).length);
+       result_address=alert_info[0][0];
+       result_num=alert_info[0][1];
+       var windspeed=alert_info[1];
+       var humidity=alert_info[2]*100;
+
+       var modal=document.getElementById("myModal");
+       modal.style.display="block";
+       if(windspeed>=14 && humidity<=35){
+        $(".modal-body").html("<br></br><br></br><h2><b><span style='color:red'>화재 의심상황 발생</span></b></h2><h5 style='margin-left:30px; text-align:left';></b><br></br><b>CCTV 주소</b>&nbsp&nbsp:&nbsp&nbsp인천 해돋이도서관<br></br><b>소방소 주소</b>&nbsp&nbsp:&nbsp&nbsp"+result_address+"<br></br><b>소방소 번호</b>&nbsp&nbsp:&nbsp&nbsp"+result_num+"<br></br><b>화재 날씨</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp강풍 주의 & 건조 주의</h5>"+
+        "<br></br><h5><b>현재상황</h5></b><p></p><img src='{% static  'images/fire_accident.jpg' %}' width='180px' height='180px'><br></br> <button type='button' class='btn btn-danger' data-dismiss='modal' onclick='dismiss_modal();'>확인 완료</button>");
+       }
+       // 강풍 주의 & 건조 위험
+       else if(windspeed>=14 && humidity<=25){
+        $(".modal-body").html("<br></br><br></br><h2><b><span style='color:red'>화재 의심상황 발생</span></b></h2><h5 style='margin-left:30px; text-align:left';></b><br></br><b>CCTV 주소</b>&nbsp&nbsp:&nbsp&nbsp인천 해돋이도서관<br></br><b>소방소 주소</b>&nbsp&nbsp:&nbsp&nbsp"+result_address+"<br></br><b>소방소 번호</b>&nbsp&nbsp:&nbsp&nbsp"+result_num+"<br></br><b>화재 날씨</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp강풍 주의 & 건조 위험</h5>"+
+        "<br></br><h5><b>현재상황</h5></b><p></p><img src='{% static  'images/fire_accident.jpg' %}' width='180px' height='180px'><br></br> <button type='button' class='btn btn-danger' data-dismiss='modal' onclick='dismiss_modal();'>확인 완료</button>");
+       }
+       // 강풍 위험 & 건조 주의
+       else if(windspeed>=21 && humidity<=35){
+        $(".modal-body").html("<br></br><br></br><h2><b><span style='color:red'>화재 의심상황 발생</span></b></h2><h5 style='margin-left:30px; text-align:left';></b><br></br><b>CCTV 주소</b>&nbsp&nbsp:&nbsp&nbsp인천 해돋이도서관<br></br><b>소방소 주소</b>&nbsp&nbsp:&nbsp&nbsp"+result_address+"<br></br><b>소방소 번호</b>&nbsp&nbsp:&nbsp&nbsp"+result_num+"<br></br><b>화재 날씨</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp강풍 위험 & 건조 주의</h5>"+
+        "<br></br><h5><b>현재상황</h5></b><p></p><img src='{% static  'images/fire_accident.jpg' %}' width='180px' height='180px'><br></br> <button type='button' class='btn btn-danger' data-dismiss='modal' onclick='dismiss_modal();'>확인 완료</button>");
+       }
+       // 강풍 위험 & 건조 위험
+       else if(windspeed>=21 && humidity<=25){
+        $(".modal-body").html("<br></br><br></br><h2><b><span style='color:red'>화재 의심상황 발생</span></b></h2><h5 style='margin-left:30px; text-align:left';></b><br></br><b>CCTV 주소</b>&nbsp&nbsp:&nbsp&nbsp인천 해돋이도서관<br></br><b>소방소 주소</b>&nbsp&nbsp:&nbsp&nbsp"+result_address+"<br></br><b>소방소 번호</b>&nbsp&nbsp:&nbsp&nbsp"+result_num+"<br></br><b>화재 날씨</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp강풍 위험 & 건조 위험</h5>"+
+        "<br></br><h5><b>현재상황</h5></b><p></p><img src='{% static  'images/fire_accident.jpg' %}' width='180px' height='180px'><br></br> <button type='button' class='btn btn-danger' data-dismiss='modal' onclick='dismiss_modal();'>확인 완료</button>");
+       }
+       // 강풍 주의
+       else if(windspeed>=14){
+        $(".modal-body").html("<br></br><br></br><h2><b><span style='color:red'>화재 의심상황 발생</span></b></h2><h5 style='margin-left:30px; text-align:left';></b><br></br><b>CCTV 주소</b>&nbsp&nbsp:&nbsp&nbsp인천 해돋이도서관<br></br><b>소방소 주소</b>&nbsp&nbsp:&nbsp&nbsp"+result_address+"<br></br><b>소방소 번호</b>&nbsp&nbsp:&nbsp&nbsp"+result_num+"<br></br><b>화재 날씨</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp강풍 주의</h5>"+
+        "<br></br><h5><b>현재상황</h5></b><p></p><img src='{% static  'images/fire_accident.jpg' %}' width='180px' height='180px'><br></br> <button type='button' class='btn btn-danger' data-dismiss='modal' onclick='dismiss_modal();'>확인 완료</button>");
+       }
+       // 강풍 위험
+       else if(windspeed>=21){
+        $(".modal-body").html("<br></br><br></br><h2><b><span style='color:red'>화재 의심상황 발생</span></b></h2><h5 style='margin-left:30px; text-align:left';></b><br></br><b>CCTV 주소</b>&nbsp&nbsp:&nbsp&nbsp인천 해돋이도서관<br></br><b>소방소 주소</b>&nbsp&nbsp:&nbsp&nbsp"+result_address+"<br></br><b>소방소 번호</b>&nbsp&nbsp:&nbsp&nbsp"+result_num+"<br></br><b>화재 날씨</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp강풍 위험</h5>"+
+        "<br></br><h5><b>현재상황</h5></b><p></p><img src='{% static  'images/fire_accident.jpg' %}' width='180px' height='180px'><br></br> <button type='button' class='btn btn-danger' data-dismiss='modal' onclick='dismiss_modal();'>확인 완료</button>");
+       }
+       // 건조 주의
+       else if(humidity<=35){
+        $(".modal-body").html("<br></br><br></br><h2><b><span style='color:red'>화재 의심상황 발생</span></b></h2><h5 style='margin-left:30px; text-align:left';></b><br></br><b>CCTV 주소</b>&nbsp&nbsp:&nbsp&nbsp인천 해돋이도서관<br></br><b>소방소 주소</b>&nbsp&nbsp:&nbsp&nbsp"+result_address+"<br></br><b>소방소 번호</b>&nbsp&nbsp:&nbsp&nbsp"+result_num+"<br></br><b>화재 날씨</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp건조 주의</h5>"+
+        "<br></br><h5><b>현재상황</h5></b><p></p><img src='{% static  'images/fire_accident.jpg' %}' width='180px' height='180px'><br></br> <button type='button' class='btn btn-danger' data-dismiss='modal' onclick='dismiss_modal();'>확인 완료</button>");
+       }
+       // 건조 위험
+       else if(humidity<=25){
+        $(".modal-body").html("<br></br><br></br><h2><b><span style='color:red'>화재 의심상황 발생</span></b></h2><h5 style='margin-left:30px; text-align:left';></b><br></br><b>CCTV 주소</b>&nbsp&nbsp:&nbsp&nbsp인천 해돋이도서관<br></br><b>소방소 주소</b>&nbsp&nbsp:&nbsp&nbsp"+result_address+"<br></br><b>소방소 번호</b>&nbsp&nbsp:&nbsp&nbsp"+result_num+"<br></br><b>화재 날씨</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp건조 위험</h5>"+
+        "<br></br><h5><b>현재상황</h5></b><p></p><img src='{% static  'images/fire_accident.jpg' %}' width='180px' height='180px'><br></br> <button type='button' class='btn btn-danger' data-dismiss='modal' onclick='dismiss_modal();'>확인 완료</button>");
+       }
+       // 바람, 습도 위험하지 않음
+       else{
+        $(".modal-body").html("<br></br><br></br><h2><b><span style='color:red'>화재 의심상황 발생</span></b></h2><h5 style='margin-left:30px; text-align:left';></b><br></br><b>CCTV 주소</b>&nbsp&nbsp:&nbsp&nbsp인천 해돋이도서관<br></br><b>소방소 주소</b>&nbsp&nbsp:&nbsp&nbsp"+result_address+"<br></br><b>소방소 번호</b>&nbsp&nbsp:&nbsp&nbsp"+result_num+"<br></br></h5>"+
+        "<br></br><h5><b>현재상황</h5></b><p></p><img src='{% static  'images/fire_accident.jpg' %}' width='180px' height='180px'><br></br> <button type='button' class='btn btn-danger' data-dismiss='modal' onclick='dismiss_modal();'>확인 완료</button>");
+       }
+
+     });
+
+   });}
+
+   check_alert=false;              // alert 여부
+   var checkTime;                  // person 을 인식한 시간 저장
+
+  <!-- -->
+  setTimeout(function() {
+    console.log("work")
+    setInterval(function() {
+      $(document).ready(function() {
+        $.ajax({
+          url: 'label_list_get',
+
+        }).done(function(msg) {
+          //console.log(Object.keys(msg).length);
+          str = "";
+          for (var i = 1; i <= Object.keys(msg).length; i++) {
+            //console.log(msg[i]);
+            str += " " + msg[i];
+            if (i < Object.keys(msg).length)
+              str += ", ";
+          }
+          //console.log(str);
+
+          $("#results").html("<h3><b>감지된 물체   :   " + str + "</b></h3>");
+
+        });
+
+      });
+
+      $(document).ready(function() {
+        $.ajax({
+          url: 'lf_accumulate',
+
+        }).done(function(msg) {
+          var today=new Date();                                           // 1970년 1월 1일 기점으로 현재 시간까지 경과된 밀리초를 반환
+          var nowTime=today.getTime();
+
+          if(msg["big_fire1"]!=-1 && check_alert==false){                                 // 큰 불 처음 확인
+              console.log("big_fire1");
+              var today2=new Date();
+              checkTime=today2.getTime();
+              check_alert=true;
+              sendAlart();
+          }
+          else if(msg["big_fire1"]!=-1 && check_alert==true){                                // 큰 불 확인을 하였지만, 이미 알람을 보냈음 (대기)
+
+          }
+          else if(msg["collision_flag"]!=-1 && check_alert==false){     // 작은 불 확인 & 부탄 가스 확인 & 겹침 true & 처음 방문
+              console.log("충돌발생")
+              var today2=new Date();
+              checkTime=today2.getTime();
+              check_alert=true;
+              sendAlart();
+          }
+          else if(msg["collision_flag"]!=-1 && check_alert==true){     // 작은 불 확인 & 부탄 가스 확인 & 겹침 true & 처음 방문
+
+          }
+          // 작은 불과 부탄가스가 인식이 되었으며, boundary가 겹친 경우
+          else if(msg["small_fire1"]!=-1 && msg["butane"]!=-1 && msg["collision_flag"]==1 && check_alert==false){     // 작은 불 확인 & 부탄 가스 확인 & 겹침 true & 처음 방문
+
+              console.log("small_fire1 & butane");
+              var today2=new Date();
+              checkTime=today2.getTime();
+              check_alert=true;
+              sendAlart();
+          }
+          else if(msg["small_fire1"]!=-1 && msg["butane"]!=-1 &&  msg["collision_flag"]==1 && check_alert==true){     // 작은 불 확인 & 부탄 가스 & 겹침 true 확인하였지만, 이미 알람을 보냈음 (대기)
+
+          }
+          // 작은 불과 콘센트가 인식이 되었으며,  boundary가 겹친 경우
+          else if(msg["small_fire1"]!=-1 && msg["multitab"]!=-1 && msg["collision_flag"]==1 && check_alert==false){     // 작은 불 확인 & 멀티탭 확인 & 겹침 true & 처음 방문
+            console.log("small_fire1 & multitab");
+            var today2=new Date();
+            checkTime=today2.getTime();
+            check_alert=true;
+            sendAlart();
+          }
+          else if(msg["small_fire1"]!=-1 && msg["butane"]!=-1 && msg["collision_flag"]==1 && check_alert==true){     // 작은 불 확인 & 멀티탭 & 겹침 true 확인하였지만, 이미 알람을 보냈음 (대기)
+
+          }
+          // 위험 사항이 아닌 경우
+          else if(msg["small_fire1"]!=-1 && msg["butane"]!=-1 && msg["collision_flag"]!=1 && check_alert==true){    // 작은 불과 부탄가스가 인식이 되지만, 겹침 false
+              //checkTime=today.getTime();                                  // checkTime 다시 설정
+              //check_alert=false;
+              //var modal=document.getElementById("myModal");
+              //modal.style.display="none";
+          }
+          else if(msg["small_fire1"]!=-1 && msg["multitab"]!=-1 && msg["collision_flag"]!=1 && check_alert==true){  // 작은 불과 멀티탭이 인식이 되지만, 겹침 false
+              //checkTime=today.getTime();                                  // checkTime 다시 설정
+              //check_alert=false;
+              //var modal=document.getElementById("myModal");
+              //modal.style.display="none";
+          }
+          else{                                                             // 위험성 파악 x
+              //checkTime=today.getTime();                                  // checkTime 다시 설정
+              //check_alert=false;
+              //var modal=document.getElementById("myModal");
+              //modal.style.display="none";
+          }
+
+          //알람을 보내고, 2분이 지난 경우
+          if(check_alert==true && nowTime-checkTime>1000*60*2){           // alert를 한 시점으로 부터 특정 시간이 지나면 다시 alert를 하도록 check_alert=false로!
+              checkTime=today.getTime();
+              check_alert=false;                                          // ms 단위이기 때문에
+                                                                          // 1000ms = 1s  // 현재는 2분으로 설정 -> 10분변경여부
+              //console.log("nowTime : ",nowTime);
+              //console.log("checkTime : ",checkTime);
+              //console.log("time is over! you can alert again");
+              //$("#alert_info").hide();
+
+              var modal=document.getElementById("myModal");
+              modal.style.display="none";
+          }
+
+        });
+      });
+
+    }, 300); // 1000이 1초
+    // 40ms -> 0.04초 -> 1frame
+  }, 2000);
+  </script>
+</head>
+
+<body class="left-menu">
+
+  <div class="menu-wrapper">
+    <div class="mobile-menu">
+      <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a href="/"><wh>Cold Eyes Project</wh></a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Home <span class="fa fa-angle-down"></span></a>
+              </li>
+              <li class="dropdown">
+                  <a href="videofile1" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CCTV 1 (인천 해돋이도서관)<span class="fa fa-angle-down"></span></a>
+
+              </li>
+              <li class="dropdown">
+                  <a href="yolosite" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CCTV 2 (동국대학교 4142호)<span class="fa fa-angle-down"></span></a>
+
+              </li>
+              <li class="dropdown">
+                  <a href="videofile2" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CCTV 3 (광주 치평동우체국)<span class="fa fa-angle-down"></span></a>
+
+              </li>
+            </ul>
+
+          </div>
+          <!--/.nav-collapse -->
+        </div>
+        <!--/.container-fluid -->
+      </nav>
+    </div><!-- end mobile-menu -->
+
+    <header class="vertical-header">
+      <div class="vertical-header-wrapper">
+        <nav class="nav-menu">
+          <div class="logo">
+            <a href="/"><wh>Cold Eyes Project</wh></a>
+          </div><!-- end logo -->
+
+          <div class="margin-block"></div>
+
+          <ul class="primary-menu">
+            <li class="child-menu"><a href="/">Home <i class="fa fa-angle-right"></i></a>
+
+            </li>
+            <li class="child-menu"><a href="videofile1">CCTV 1 (인천 해돋이도서관)<i class="fa fa-angle-right"></i></a>
+
+            </li>
+            <li class="child-menu"><a href="yolosite">CCTV 2 (동국대학교 4142호)<i class="fa fa-angle-right"></i></a>
+
+            </li>
+            <li class="child-menu"><a href="videofile2">CCTV 3 (광주 치평동우체국)<i class="fa fa-angle-right"></i></a>
+
+            </li>
+
+          </ul>
+
+          <div class="menu-social">
+            <ul class="list-inline text-center">
+              <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+              <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+              <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+              <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+            </ul>
+          </div><!-- end menu -->
+        </nav><!-- end nav-menu -->
+      </div><!-- end vertical-header-wrapper -->
+    </header><!-- end header -->
+  </div><!-- end menu-wrapper -->
+
+  <div id="wrapper">
+
+    <div id="home" class="video-section">
+      <div class="overlay_cctv">
+        <div id="box1">
+          <div id="box11">
+            <wh>CCTV 1(인천 해돋이도서관)</p>
+            </wh>
+            <div id="box111">
+              <img src="http://localhost:8000/video_yolo_start1" width="100%" height="100%"></img>
+            </div>
+          </div>
+          <div id="box12">
+            <div class="alert alert-success">
+              <div id="results"></div>
+            </div>
+          </div>
+        </div>
+        <!--box1 end-->
+        <div id="box2">
+          <div id="box21">
+            <wh>
+              <p>CCTV 1(인천 해돋이도서관)</p>
+            </wh>
+              <a href="videofile1"><img id="videobcg" src="{% static  'videos/cctv1.gif' %}" type="image/gif"></img></a>
+          </div>
+          <div id="box22">
+            <wh>
+              <p>CCTV 2(동국대학교 4142호)</p>
+            </wh>
+            <a href="yolosite"><img id="videobcg" src="{% static  'videos/cctv2.gif' %}" type="image/gif"></img></a>
+          </div>
+          <div id="box23">
+            <wh>
+              <p>CCTV 3(광주 치평동우체국)</p>
+            </wh>
+            <a href="videofile2"><img id="videobcg" src="{% static  'videos/cctv3.gif' %}" type="image/gif"></img></a>
+          </div>
+        </div>
+        <!--box2 end-->
+        <div class="modal" id="myModal">
+          <div class="modal-dialog">
+            <div class="modal-content" style="background-image: URL({% static  'images/phone.png' %}); background-size: 400px 600px; height:600px; width: 400px;">
+              <!-- Modal Header -->
+              <!-- Modal body -->
+              <div class="modal-body" style="text-align: center;">
+
+              </div>
+
+              <!-- Modal footer -->
+            </div>
+          </div>
+        </div>
+        <!--modal end -->
+      </div>
+    </div>
+    <!--end home-->
+  </div><!-- end wrapper -->
+
+  <!-- jQuery Files -->
+  <script src="{% static  'js/jquery.min.js' %}"></script>
+  <script src="{% static  'js/bootstrap.min.js' %}"></script>
+  <script src="{% static  'js/carousel.js' %}"></script>
+  <script src="{% static  'js/parallax.js' %}"></script>
+  <script src="{% static  'js/rotate.js' %}"></script>
+  <script src="{% static  'js/custom.js' %}"></script>
+  <script src="{% static  'js/masonry.js' %}"></script>
+  <script src="{% static  'js/masonry-4-col.js' %}"></script>
+
+  <!-- VIDEO BG PLUGINS -->
+  <script src="{% static  'videos/libs/swfobject.js' %}"></script>
+  <script src="{% static  'videos/libs/modernizr.video.js' %}"></script>
+  <script src="{% static  'videos/libs/video_background.js' %}"></script>
+
+</body>
+
+</html>

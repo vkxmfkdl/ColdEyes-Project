@@ -1,0 +1,178 @@
+{% load static %}
+<!doctype html>
+<!--[if IE 9]> <html class="no-js ie9 fixed-layout" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js " lang="en"> <!--<![endif]-->
+<head>
+
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Site Meta -->
+    <title>Cold Eyes Project</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="{% static  'image/x-icon' %}" />
+    <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
+
+	<!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+
+	<!-- Custom & Default Styles -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+    <link rel="stylesheet" href="{% static  'style.css' %}">
+
+	<!--[if lt IE 9]>
+		<script src="js/vendor/html5shiv.min.js"></script>
+		<script src="js/vendor/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<body class="left-menu">
+
+  <div class="menu-wrapper">
+      <div class="mobile-menu">
+          <nav class="navbar navbar-inverse">
+              <div class="container-fluid">
+                  <div class="navbar-header">
+                      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                          <span class="sr-only">Toggle navigation</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                      </button>
+                      <a href="/"><wh>Cold Eyes Project</wh></a>
+                  </div>
+                  <div id="navbar" class="navbar-collapse collapse">
+                      <ul class="nav navbar-nav">
+                          <li class="dropdown">
+                              <a href="/" class="dropdown-toggle">Home <span class="fa fa-angle-down"></span></a>
+                          </li>
+                          <li class="dropdown">
+                              <a href="videofile1" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CCTV 1 (인천 해돋이도서관)<span class="fa fa-angle-down"></span></a>
+
+                          </li>
+                          <li class="dropdown">
+                              <a href="yolosite" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CCTV 2 (동국대학교 4142호)<span class="fa fa-angle-down"></span></a>
+
+                          </li>
+                          <li class="dropdown">
+                              <a href="videofile2" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CCTV 3 (광주 치평동우체국)<span class="fa fa-angle-down"></span></a>
+
+                          </li>
+
+                      </ul>
+
+                  </div><!--/.nav-collapse -->
+              </div><!--/.container-fluid -->
+          </nav>
+      </div><!-- end mobile-menu -->
+
+        <header class="vertical-header">
+            <div class="vertical-header-wrapper">
+                <nav class="nav-menu">
+                    <div class="logo">
+
+                        <a href="/"><wh>Cold Eyes Project</wh></a>
+                    </div><!-- end logo -->
+
+                    <div class="margin-block"></div>
+
+                    <ul class="primary-menu">
+                        <li class="child-menu"><a href="">Home <i class="fa fa-angle-right"></i></a>
+
+                        </li>
+                        <li class="child-menu"><a href="videofile1">CCTV 1 (인천 해돋이도서관)<i class="fa fa-angle-right"></i></a>
+
+                        </li>
+                        <li class="child-menu"><a href="yolosite">CCTV 2 (동국대학교 4142호)<i class="fa fa-angle-right"></i></a>
+
+                        </li>
+                        <li class="child-menu"><a href="videofile2">CCTV 3 (광주 치평동우체국)<i class="fa fa-angle-right"></i></a>
+
+                        </li>
+
+                    </ul>
+
+                    <div class="margin-block"></div>
+
+
+
+                    <div class="margin-block"></div>
+
+                    <div class="menu-social">
+                        <ul class="list-inline text-center">
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                        </ul>
+                    </div><!-- end menu -->
+                </nav><!-- end nav-menu -->
+            </div><!-- end vertical-header-wrapper -->
+        </header><!-- end header -->
+    </div><!-- end menu-wrapper -->
+    <div id="wrapper">
+
+        <div id="home" class="video-section">
+            <div class="overlay">
+            </div>
+            <div class="home-text-wrapper relative container">
+                <div class="home-message">
+                    <a href="/">
+                    <gr>ProJ. </gr>
+                    <re>Cold</re>&nbsp
+                    <bl>Eyes</bl>&nbsp
+
+                    </a>
+                    <div class="btn-wrapper">
+
+                    </div><!-- end row -->
+
+                </div>
+            </div>
+        </div>
+    </div><!-- end wrapper -->
+    <!-- jQuery Files -->
+    <script src="{% static  'js/jquery.min.js' %}"></script>
+    <script src="{% static  'js/bootstrap.min.js' %}"></script>
+    <script src="{% static  'js/carousel.js' %}"></script>
+    <script src="{% static  'js/parallax.js' %}"></script>
+    <script src="{% static  'js/rotate.js' %}"></script>
+    <script src="{% static  'js/custom.js' %}"></script>
+    <script src="{% static  'js/masonry.js' %}"></script>
+    <script src="{% static  'js/masonry-4-col.js' %}"></script>
+
+    <!-- VIDEO BG PLUGINS -->
+    <script src="{% static  'videos/libs/swfobject.js' %}"></script>
+    <script src="{% static  'videos/libs/modernizr.video.js' %}"></script>
+    <script src="{% static  'videos/libs/video_background.js' %}"></script>
+
+    <script>
+        jQuery(document).ready(function($) {
+            var Video_back = new video_background($("#home"), {
+                "position": "absolute", //Follow page scroll
+                "z-index": "-1",        //Behind everything
+                "loop": true,           //Loop when it reaches the end
+                "autoplay": true,       //Autoplay at start
+                "muted": true,          //Muted at start
+                "mp4":"{% static  'videos/video1.mp4' %}",
+                "opacity":1,
+                "video_ratio": 1.7778,              // width/height -> If none provided sizing of the video is set to adjust
+                //"fallback_image": "{% static 'images/dummy.png' %}",   //Fallback image path
+                "priority": "html5"             //Priority for html5 (if set to flash and tested locally will give a flash security error)
+            });
+        });
+    </script>
+
+</body>
+</html>

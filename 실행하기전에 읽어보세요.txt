@@ -1,0 +1,6 @@
+메모장이  있는 디렉토리에
+yolov3.weights 파일을 넣어야 정상 실행이됩니다. (weight파일 용량이 커서 뺐음)
+
+해당 디렉토리에서 cmd창에
+py manage.py runserver  -> 서버 실행
+http://127.0.0.1:8000/ -> 홈화면 url 
