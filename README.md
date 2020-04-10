@@ -8,7 +8,9 @@
 
 4. 개발기간: 2019.08~2019.09
 
-5. 결과
+5. 데모영상: https://www.youtube.com/watch?v=MR41moiE5rA
+
+5. 결과화면
 
 <b>실행화면 1) 페이지 UI구성 </b>
 <img src="https://user-images.githubusercontent.com/37204852/78981092-29fde680-7b5a-11ea-80db-fe15bf4f79d4.png">
