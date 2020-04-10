@@ -9,7 +9,12 @@
 4. 개발기간: 2019.08~2019.09
 
 5. 결과
+
+<b>실행화면 1) 페이지 UI구성 </b>
 <img src="https://user-images.githubusercontent.com/37204852/78981092-29fde680-7b5a-11ea-80db-fe15bf4f79d4.png">
+
+<b>실행화면 2) 화재 감지 시 알림</b>
+<img src="https://user-images.githubusercontent.com/37204852/78981312-9ed12080-7b5a-11ea-9d35-3ad8531701ef.png">
 
 # 실행 방법
 
