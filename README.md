@@ -10,7 +10,7 @@
 
 5. 데모영상: https://www.youtube.com/watch?v=8OwfcMeB8NY
 
-5. 결과
+6. 결과
 
 <b>1) CNN 모델링 테스트(Coldeyenet은 자체 개발한 모델) </b>
 <img src="https://user-images.githubusercontent.com/37204852/79063692-167b8880-7cde-11ea-858c-14200069c818.png">
