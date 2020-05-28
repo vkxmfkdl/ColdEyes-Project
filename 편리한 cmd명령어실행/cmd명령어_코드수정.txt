@@ -1,3 +1,0 @@
-call activate (가상환경 이름)
-
-ex) bbb -> coldeyes로 수정!

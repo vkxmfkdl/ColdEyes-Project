@@ -17,12 +17,8 @@ from django.views.decorators import gzip
 import scipy.misc as smp
 from PIL import Image
 # Create your views here.
-######################
 import queue
 
-
-######################
-#from __future__ import division
 import torch
 import torch.nn as nn
 
@@ -41,20 +37,18 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
-######################
+
 # 디비연동
 from yolo.models import fireoffice
 import pymysql
-#######################
+
 # 날씨 패키지
 import forecastio
 
-#######################
 #경로값
 import tensorflow as tf
 
 
-#######################
 label_list = []
 cnt_length_queue = queue.Queue()
 label_acc_queue = queue.Queue()
@@ -65,7 +59,6 @@ collision_flag = 0 # 위험물질 충돌 발생 여부 .
 picture = 0
 
 
-#######################
 def main(request):
     reset_data()
     return render_to_response("main.html")
@@ -82,7 +75,6 @@ def yolosite(request):
     reset_data()
     return render_to_response("yolosite.html")
 
-#############################################################################
 def get_test_input(input_dim, CUDA):
     img = cv2.imread("imgs/messi.jpg")
     img = cv2.resize(img, (input_dim, input_dim))
@@ -221,16 +213,11 @@ def stream_yolo_ready():
                 print("label_list : ", label_list)
                 collision(label_list)
                 flag = 0
-
-                #이미지 저장하는 코드
-                #cv2.imwrite('yolo/static/images/fire_accident.jpg',orig_im)
-
                 ret2,jpeg2 = cv2.imencode('.jpg',orig_im)
                 detect_image_byte = jpeg2.tobytes()
 
                 yield(b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + detect_image_byte + b'\r\n\r\n')
-                #cv2.imshow("frame", orig_im)
                 key = cv2.waitKey(1)
                 if key & 0xFF == ord('q'):
                     break
@@ -241,15 +228,12 @@ def stream_yolo_ready():
             im_dim = im_dim.repeat(output.size(0), 1)
             output[:,[1,3]] *= frame.shape[1]
             output[:,[2,4]] *= frame.shape[0]
-            #전역변수 선언
+
             picture = orig_im
             label_list = list(map(lambda x: write(x, orig_im), output))
             print("label_list : ", label_list)
             collision(label_list)
             flag = 0
-            #cv2.imshow("frame", orig_im)
-
-            #이미지 저장하는 코드
 
             ret2,jpeg2 = cv2.imencode('.jpg',orig_im)
 
@@ -281,7 +265,7 @@ def video_yolo_ready1():
     model = Darknet(cfgfile)
     model.load_weights(weightsfile)
 
-    model.net_info["height"] = 416 # 160을 보다 낮은 수 넣으면속도는 빨라짐(단,32의배수값만넣어야함)
+    model.net_info["height"] = 416 
     inp_dim = int(model.net_info["height"])
 
     assert inp_dim % 32 == 0
@@ -329,9 +313,6 @@ def video_yolo_ready1():
                 collision(label_list)
 
                 flag = 0
-                #이미지 저장하는 코드
-
-
                 ret2,jpeg2 = cv2.imencode('.jpg',orig_im)
                 detect_image_byte = jpeg2.tobytes()
                 yield(b'--frame\r\n'
@@ -340,8 +321,6 @@ def video_yolo_ready1():
                 if key & 0xFF == ord('q'):
                     break
                 continue
-
-
 
 
             im_dim = im_dim.repeat(output.size(0), 1)
@@ -442,9 +421,6 @@ def video_yolo_ready2():
                 collision(label_list)
 
                 flag = 0
-                #이미지 저장하는 코드
-
-
                 ret2,jpeg2 = cv2.imencode('.jpg',orig_im)
                 detect_image_byte = jpeg2.tobytes()
                 yield(b'--frame\r\n'
@@ -453,9 +429,6 @@ def video_yolo_ready2():
                 if key & 0xFF == ord('q'):
                     break
                 continue
-
-
-
 
             im_dim = im_dim.repeat(output.size(0), 1)
             scaling_factor = torch.min(inp_dim/im_dim,1)[0].view(-1,1)
@@ -598,10 +571,6 @@ def lf_accumulate(request):
         flag = 1
 
     #라벨의 개수를 세는 부분 start
-    print('================lf_accumulate start================')
-    print('frames : ', frames)
-    print("label_acc_queue : ",test_list)
-
 
     #라벨의 개수를 세는 부분 start
     while label_acc_queue.qsize():
@@ -663,17 +632,15 @@ def lf_accumulate(request):
         cv2.imwrite('yolo/static/images/fire_accident.jpg',picture)
 
     result_dic = {"person":person_sign,"cellphone":cellphone_sign, "small_fire1":small_fire1_sign, "big_fire1":big_fire1_sign,"butane":butane_sign, "multitap":multitap_sign,"collision_flag":collision_flag} #1은 person, 1이면 검출ok -1이면 검출x
-    print(result_dic)
-    print('================lf_accumulate end================')
     if request.is_ajax():
         return HttpResponse(json.dumps(result_dic),'application/json')
 
 
 def mail(request):
     # 지메일 아이디,비번 입력하기
-    email_user = 'vkxmfkdl@gmail.com'      #<ID> 본인 계정 아이디 입력
-    email_password = 'kzegjrpnjgwiqcks'      #<PASSWORD> 본인 계정 암호 입력
-    email_send = 'qkrrudals689@naver.com'         # <받는곳주소> 수신자 이메일 abc@abc.com 형태로 입력
+    email_user = 'SECRET'      #<ID> 본인 계정 아이디 입력
+    email_password = 'SECRET'      #<PASSWORD> 본인 계정 암호 입력
+    email_send = 'SECRET'         # <받는곳주소> 수신자 이메일 abc@abc.com 형태로 입력
 
     # 제목 입력
     subject = '화재가 감지되었습니다. 확인부탁드립니다. -Cold Eyes Project-'
@@ -716,9 +683,6 @@ def seoul_fireoffice_weather_info(request):
     for office_info in fireoffices:
         context.append([office_info['address'],office_info['number']])
 
-    #a=["부천시 소사구 송내동 부천소방서","032-345-1234"]
-    #context.append(a)
-
     # 날씨연동
     api_key="aa3403904ae3cdee09abb3d46f14ee88"
     lat=37.559
@@ -727,16 +691,11 @@ def seoul_fireoffice_weather_info(request):
 
     #날씨 데이터 넣기
     current_forecast=forecast.hourly()
-    #print(current_forecast.summary)
     i=1
 
     for weather_data in current_forecast.data:
         if(i==2):
             break
-        #index 1~49
-        #index 1 : present
-        #index 2~49 : future expect(hour after) ex) index 2 : 1 hour after windspeed, humidity
-
         context.append(weather_data.windSpeed)
         context.append(weather_data.humidity)
         i=i+1
@@ -746,7 +705,6 @@ def seoul_fireoffice_weather_info(request):
 
 
 def incheon_fireoffice_weather_info(request):
-    print("인천=============================================================================================")
     context=[]
 
     fireoffices=fireoffice.objects.all().values('address','number').filter(id=271)
@@ -761,17 +719,12 @@ def incheon_fireoffice_weather_info(request):
 
     #날씨 데이터 넣기
     current_forecast=forecast.hourly()
-    #print(current_forecast.summary)
     i=1
 
 
     for weather_data in current_forecast.data:
         if(i==2):
             break
-        #index 1~49
-        #index 1 : present
-        #index 2~49 : future expect(hour after) ex) index 2 : 1 hour after windspeed, humidity
-
         context.append(weather_data.windSpeed)
         context.append(weather_data.humidity)
 
@@ -788,9 +741,6 @@ def gwangju_fireoffice_weather_info(request):
     for office_info in fireoffices:
         context.append([office_info['address'],office_info['number']])
 
-    #a=["부천시 소사구 송내동 부천소방서","032-345-1234"]
-    #context.append(a)
-
     # 날씨연동
     api_key="aa3403904ae3cdee09abb3d46f14ee88"
     lat=35.153075
@@ -799,15 +749,11 @@ def gwangju_fireoffice_weather_info(request):
 
     #날씨 데이터 넣기
     current_forecast=forecast.hourly()
-    #print(current_forecast.summary)
     i=1
 
     for weather_data in current_forecast.data:
         if(i==2):
             break
-        #index 1~49
-        #index 1 : present
-        #index 2~49 : future expect(hour after) ex) index 2 : 1 hour after windspeed, humidity
 
         context.append(weather_data.windSpeed)
         context.append(weather_data.humidity)
@@ -824,14 +770,12 @@ def collision(label_data): #충돌 판단 알고리즘
             if label_data[i][0] =="small_fire1" and label_data[k][0]=="butane":
                 result_collision = collision_compare(label_data[i],label_data[k])
                 if result_collision == 1:
-                    print('충돌 발생!!!!!!!!!!!!!!!!!!!!!!!')
                     collision_flag = 1
                     return 1
 
             if label_data[i][0] =="small_fire1" and label_data[k][0]=="multitab":
                 result_collision = collision_compare(label_data[i],label_data[k])
                 if result_collision:
-                    print('충돌 발생!!!!!!!!!!!!!!!!!!!!!!!')
                     collision_flag = 1
                     return 1
     return -1
@@ -847,9 +791,6 @@ def collision_compare(one ,two):
     two_top = 416-one[2]
     two_bottom = 416-one[4]
 
-    print("one1111111111111111111111111111111111111111111111111111111111111111111")
-    print("one:",one_left,one_right,one_bottom,one_top)
-    print("two:",two_left,two_right,two_bottom,two_top)
     if one_left <two_right and one_right > two_left and one_top > two_bottom and one_bottom <two_top:
         return 1
     else:

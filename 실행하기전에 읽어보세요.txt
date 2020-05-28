@@ -1,5 +1,7 @@
-메모장이  있는 디렉토리에
-yolov3.weights 파일을 넣어야 정상 실행이됩니다. (weight파일 용량이 커서 뺐음)
+메모장이 있는 디렉토리에
+yolov3.weights 파일을 넣어야 정상 실행이됩니다. 
+
+(모델 학습 weight파일은 용량이 커서 제외했습니다.
 
 해당 디렉토리에서 cmd창에
 py manage.py runserver  -> 서버 실행
